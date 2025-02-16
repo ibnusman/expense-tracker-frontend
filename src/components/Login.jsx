@@ -1,51 +1,67 @@
 import React, { useState } from "react";
-import { Form, Button, Container, Alert } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import API_BASE_URL from "../config";
-import "/src/styles.css";
+import { Link, useNavigate } from "react-router-dom";
+import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Redirect after login
 
-  const handleLogin = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+    if (!username || !password) {
+      alert("Please fill in both fields.");
+      return;
+    }
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Login failed");
+    console.log("Logging in:", { username, password });
 
-      localStorage.setItem("token", data.token);
-      navigate("/dashboard"); // Automatically navigate to dashboard
-    } catch (err) {
-      setError(err.message);
+    if (onLogin) {
+      onLogin({ username, password });
+      navigate("/dashboard"); // Redirect after login
+    } else {
+      console.error("onLogin function is missing.");
     }
   };
 
   return (
-    <Container>
-      <h2>Login</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Form onSubmit={handleLogin}>
-        <Form.Group>
-          <Form.Label>Username</Form.Label>
-          <Form.Control value={username} onChange={(e) => setUsername(e.target.value)} />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </Form.Group>
-        <Button type="submit" className="mt-3 login-btn">Login</Button>
-      </Form>
+    <Container className="d-flex align-items-center justify-content-center vh-100">
+      <Row>
+        <Col md={12}>
+          <Card className="shadow-lg p-4">
+            <Card.Body>
+              <h2 className="text-center text-primary mb-4">Login</h2>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+                <Button variant="primary" type="submit" className="w-100">
+                  Login
+                </Button>
+              </Form>
+              <p className="text-center mt-3">
+                Don't have an account? <Link to="/register">Register</Link>
+              </p>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </Container>
   );
 };
