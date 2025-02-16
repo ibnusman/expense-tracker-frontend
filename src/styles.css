@@ -149,3 +149,71 @@ body {
     align-items: center;
   }
 }
+/* Top Bar for Dashboard */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Logout button at top right */
+.logout-btn {
+  background-color: #dc3545;
+  border: none;
+  padding: 10px 15px;
+}
+
+/* Fix Add Expense button to fully cover text */
+.expense-btn {
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  padding: 10px;
+}
+
+/* Style for receipt images */
+.receipt-img {
+  width: 100px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}.landing-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.image-container {
+  position: relative;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.landing-image {
+  width: 80%; /* Increased size to 80% of the container width */
+  max-width: 600px; /* Ensures it doesn't become too large on big screens */
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
+}
+
+.buttons-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 15px;
+}
+
+@media (max-width: 768px) {
+  .landing-image {
+    width: 90%; /* Slightly bigger for smaller screens */
+    max-width: 450px;
+  }
+  .buttons-overlay {
+    flex-direction: column;
+    top: 45%;
+  }
+}

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { Form, Button, Container, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { Form, Button, Alert, Container } from "react-bootstrap";
 import API_BASE_URL from "../config";
+import "/src/styles.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -9,33 +10,32 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
- const handleLogin = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
 
-    const data = await response.json();
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
 
-    if (!response.ok) throw new Error(data.message || "Login failed");
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Login failed");
 
-    // Store token in localStorage
-    localStorage.setItem("token", data.token);
-
-    navigate("/dashboard"); // Redirect after successful login
-  } catch (err) {
-    setError(err.message);
-  }
-};
-
+      localStorage.setItem("token", data.token);
+      navigate("/dashboard"); // Automatically navigate to dashboard
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   return (
     <Container>
       <h2>Login</h2>
       {error && <Alert variant="danger">{error}</Alert>}
-      <Form>
+      <Form onSubmit={handleLogin}>
         <Form.Group>
           <Form.Label>Username</Form.Label>
           <Form.Control value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -44,7 +44,7 @@ const Login = () => {
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </Form.Group>
-        <Button onClick={handleLogin} className="mt-3">Login</Button>
+        <Button type="submit" className="mt-3 login-btn">Login</Button>
       </Form>
     </Container>
   );

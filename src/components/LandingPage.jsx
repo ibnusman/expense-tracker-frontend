@@ -4,7 +4,6 @@ import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import financeImage from "../assets/images/finance.jpg";
 import "/src/styles.css";
 
-
 const LandingPage = () => {
   return (
     <Container className="landing-container">
@@ -12,19 +11,21 @@ const LandingPage = () => {
         <Col>
           <h1>Welcome to Expense Tracker</h1>
           <p>Manage your expenses efficiently and achieve financial freedom.</p>
-          <img src={financeImage} alt="Finance" className="landing-image" />
-          <div className="mt-4">
-            <Link to="/register">
-              <Button variant="primary" className="me-3">Register</Button>
-            </Link>
-            <Link to="/login">
-              <Button variant="outline-primary">Login</Button>
-            </Link>
+          <div className="image-container">
+            <img src={financeImage} alt="Finance" className="landing-image" />
+            <div className="buttons-overlay">
+              <Link to="/register">
+                <Button variant="primary" className="me-3">Register</Button>
+              </Link>
+              <Link to="/login">
+                <Button variant="outline-primary">Login</Button>
+              </Link>
+            </div>
           </div>
         </Col>
       </Row>
       <Row className="mt-5">
-        <h2>Financial Advice</h2>
+        <h2 className="text-center">Financial Advice</h2>
         <Col md={4}>
           <Card>
             <Card.Body>
